@@ -1385,7 +1385,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #7725ff;
+    background: #829cde;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -2903,12 +2903,12 @@ body {
 /* 博客内容透明化 */
 /* 文章内容的透明度设置 */
 .content-wrap {
-  opacity: 0.5;
+  opacity: 0;
 }
 /* 侧边框的透明度设置 */
 .sidebar {
   transition-duration: 0.4s;
-  opacity: 0.5; /* 透明度 */
+  opacity: 0; /* 透明度 */
   border-radius: 30px; /* 简写，等效30px 30px 30px 30px */
 }
 /* 侧边头像框内部 */
@@ -2919,7 +2919,7 @@ body {
   box-sizing: border-box;
   color: var(--text-color);
   width: 240px;
-  opacity: 0; /* 注意：opacity:0 会完全透明，可能看不到元素 */
+  opacity: 1; /* 注意：opacity:0 会完全透明，可能看不到元素 */
   box-shadow: 8px 7px 2px 0 rgba(0,0,0,0.12), 7px 4px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12);
 }
 /* 菜单栏的透明度设置 */

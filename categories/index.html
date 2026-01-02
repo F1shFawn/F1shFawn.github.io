@@ -70,17 +70,40 @@
 
 
 <style>
-/* 全局所有区域（空白、文字、链接等）都显示Linkselect.cur光标 */
-* {
-  /* 核心修改：把default换成目标光标链接，auto是备用样式（加载失败时显示系统默认） */
-  cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Personselect.cur'), auto !important;
-}
-
-/* 可选：保留链接hover的光标规则（和全局一致，防止主题覆盖，可删） */
-a:hover {
-  cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Personselect.cur'), pointer !important;
-}
+  /* 1. 全局默认光标：Linkselect.cur（所有区域默认显示这个） */
+  * {
+    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Personselect.cur'), auto !important;
+  }
+  /* 2. 定义鼠标静止时的光标类（后续JS会给body加这个类） */
+  .mouse-idle {
+    cursor: url('/images/Busy.ani'), auto !important;
+  }
 </style>
+
+<script>
+  // 鼠标静止计时变量（5秒 = 5000毫秒）
+  let idleTimer;
+  const IDLE_TIME = 5000; // 可修改时间，比如3秒就是3000
+
+  // 监听鼠标移动事件
+  document.addEventListener('mousemove', function() {
+    // 鼠标一动：清除定时器 + 移除静止类（切回Linkselect.cur）
+    clearTimeout(idleTimer);
+    document.body.classList.remove('mouse-idle');
+    
+    // 重新开始计时：5秒后添加静止类（切换为Busy.ani）
+    idleTimer = setTimeout(function() {
+      document.body.classList.add('mouse-idle');
+    }, IDLE_TIME);
+  });
+
+  // 页面加载时就启动计时
+  window.onload = function() {
+    idleTimer = setTimeout(function() {
+      document.body.classList.add('mouse-idle');
+    }, IDLE_TIME);
+  };
+</script>
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>

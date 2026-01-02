@@ -69,7 +69,17 @@
 
 
 
-
+<!-- 自定义鼠标样式 - 直接注入到<head>中 -->
+<style>
+  /* 全局默认鼠标样式 */
+  * {
+    cursor: default !important;
+  }
+  /* 链接悬浮时使用阿里云OSS的Linkselect.cur */
+  a:hover {
+    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Linkselect.cur'), pointer !important;
+  }
+</style>
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>

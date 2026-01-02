@@ -78,50 +78,41 @@
     cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Personselect.cur'), auto !important;
   }
 
-  /* 2. 鼠标静止时的光标（提升优先级，强制覆盖全局） */
-  /* 用 body * 选择器 + 双重 !important，确保优先级最高 */
+  /* 2. 鼠标静止5秒后显示OSS的Busy.ani（最高优先级） */
   body.mouse-idle * {
-    cursor: url('/images/Busy.ani'), auto !important;
-    /* 兼容不同浏览器的写法，防止忽略 */
-    cursor: url('/images/Busy.ani'), auto \9 !important;
+    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Busy.ani'), auto !important;
+    /* 多浏览器兼容写法，防止忽略 */
+    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Busy.ani'), auto \9 !important;
   }
 </style>
 
 <script>
-  // 鼠标静止计时变量（5秒 = 5000毫秒）
+  // 鼠标静止计时（5秒=5000毫秒，可改）
   let idleTimer;
-  const IDLE_TIME = 5000; // 可修改静止时间
+  const IDLE_TIME = 3000;
 
-  // 监听鼠标移动事件
-  document.addEventListener('mousemove', function(e) {
-    // 鼠标一动：清除定时器 + 移除静止类（切回Linkselect.cur）
+  // 监听鼠标移动/点击/滚动，确保触发重置
+  function resetIdleTimer() {
     clearTimeout(idleTimer);
     document.body.classList.remove('mouse-idle');
-    
-    // 重新开始计时：5秒后添加静止类（切换为Busy.ani）
-    idleTimer = setTimeout(function() {
+    // 重新计时
+    idleTimer = setTimeout(() => {
       document.body.classList.add('mouse-idle');
     }, IDLE_TIME);
-    // 防止鼠标在空白处移动不触发（兼容）
-    e.preventDefault();
-  });
+  }
 
-  // 页面加载时启动计时，且初始化移除类
+  // 绑定所有鼠标交互事件
+  document.addEventListener('mousemove', resetIdleTimer);
+  document.addEventListener('click', resetIdleTimer);
+  document.addEventListener('scroll', resetIdleTimer);
+
+  // 页面加载初始化
   window.onload = function() {
     document.body.classList.remove('mouse-idle');
-    idleTimer = setTimeout(function() {
+    idleTimer = setTimeout(() => {
       document.body.classList.add('mouse-idle');
     }, IDLE_TIME);
   };
-
-  // 额外监听鼠标点击、滚动，确保触发重置（兼容）
-  document.addEventListener('click', function() {
-    clearTimeout(idleTimer);
-    document.body.classList.remove('mouse-idle');
-    idleTimer = setTimeout(function() {
-      document.body.classList.add('mouse-idle');
-    }, IDLE_TIME);
-  });
 </script>
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">

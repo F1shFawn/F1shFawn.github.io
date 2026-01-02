@@ -67,23 +67,27 @@
 
 
 <style>
-  /* 1. 全局默认光标：Linkselect.cur（所有区域默认显示这个） */
+  /* 1. 全局默认光标：Linkselect.cur（鼠标移动时显示） */
   * {
     cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Personselect.cur'), auto !important;
   }
-  /* 2. 定义鼠标静止时的光标类（后续JS会给body加这个类） */
-  .mouse-idle {
+
+  /* 2. 鼠标静止时的光标（提升优先级，强制覆盖全局） */
+  /* 用 body * 选择器 + 双重 !important，确保优先级最高 */
+  body.mouse-idle * {
     cursor: url('/images/Busy.ani'), auto !important;
+    /* 兼容不同浏览器的写法，防止忽略 */
+    cursor: url('/images/Busy.ani'), auto \9 !important;
   }
 </style>
 
 <script>
   // 鼠标静止计时变量（5秒 = 5000毫秒）
   let idleTimer;
-  const IDLE_TIME = 5000; // 可修改时间，比如3秒就是3000
+  const IDLE_TIME = 5000; // 可修改静止时间
 
   // 监听鼠标移动事件
-  document.addEventListener('mousemove', function() {
+  document.addEventListener('mousemove', function(e) {
     // 鼠标一动：清除定时器 + 移除静止类（切回Linkselect.cur）
     clearTimeout(idleTimer);
     document.body.classList.remove('mouse-idle');
@@ -92,14 +96,26 @@
     idleTimer = setTimeout(function() {
       document.body.classList.add('mouse-idle');
     }, IDLE_TIME);
+    // 防止鼠标在空白处移动不触发（兼容）
+    e.preventDefault();
   });
 
-  // 页面加载时就启动计时
+  // 页面加载时启动计时，且初始化移除类
   window.onload = function() {
+    document.body.classList.remove('mouse-idle');
     idleTimer = setTimeout(function() {
       document.body.classList.add('mouse-idle');
     }, IDLE_TIME);
   };
+
+  // 额外监听鼠标点击、滚动，确保触发重置（兼容）
+  document.addEventListener('click', function() {
+    clearTimeout(idleTimer);
+    document.body.classList.remove('mouse-idle');
+    idleTimer = setTimeout(function() {
+      document.body.classList.add('mouse-idle');
+    }, IDLE_TIME);
+  });
 </script>
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">

@@ -71,23 +71,14 @@
 
 
 
-<!-- 完全保留你的原始代码 + 新增非空白区域规则 -->
 <style>
-  /* ===== 以下是你原来的代码，一字未删 ===== */
-  /* 全局默认鼠标样式 */
+/* 全局默认鼠标样式 */
   * {
     cursor: default !important;
   }
   /* 链接悬浮时使用阿里云OSS的Linkselect.cur */
   a:hover {
-    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Busy.ani'), pointer !important;
-  }
-
-  /* ===== 以下是新增的规则（仅添加，不修改任何原有代码） ===== */
-  /* 所有非空白元素（文字、标题、按钮、图片等）强制显示Busy.ani */
-  /* 覆盖除空白外的所有区域，且优先级高于默认，但不影响你原有a:hover（若想a:hover也显示Busy.ani，可看备注） */
-  .header, .post-content, .footer, .nav, .tag, .category, button, img, p, h1, h2, h3, h4, h5, h6 {
-    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Busy.ani'), auto !important;
+    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Linkselect.cur'), pointer !important;
   }
 </style>
   <noscript>

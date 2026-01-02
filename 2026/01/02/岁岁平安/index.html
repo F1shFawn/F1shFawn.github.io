@@ -72,35 +72,35 @@
 
 
 <style>
-  /* 1. 全局默认光标：Linkselect.cur（鼠标移动时显示） */
+  /* 1. 鼠标移动时：全局显示OSS的Personselect.cur */
   * {
     cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Personselect.cur'), auto !important;
   }
 
-  /* 2. 鼠标静止5秒后显示OSS的Busy.ani（最高优先级） */
+  /* 2. 鼠标静止3秒后：显示OSS的Unavailable.cur（最高优先级） */
   body.mouse-idle * {
-    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Busy.ani'), auto !important;
-    /* 多浏览器兼容写法，防止忽略 */
-    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Busy.ani'), auto \9 !important;
+    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Unavailable.cur'), auto !important;
+    /* 兼容写法，确保不被主题样式覆盖 */
+    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Unavailable.cur'), auto \9 !important;
   }
 </style>
 
 <script>
-  // 鼠标静止计时（5秒=5000毫秒，可改）
+  // 鼠标静止计时（3秒=3000毫秒）
   let idleTimer;
   const IDLE_TIME = 3000;
 
-  // 监听鼠标移动/点击/滚动，确保触发重置
+  // 重置计时的通用函数
   function resetIdleTimer() {
     clearTimeout(idleTimer);
     document.body.classList.remove('mouse-idle');
-    // 重新计时
+    // 重新开始计时：3秒后添加静止类
     idleTimer = setTimeout(() => {
       document.body.classList.add('mouse-idle');
     }, IDLE_TIME);
   }
 
-  // 绑定所有鼠标交互事件
+  // 绑定所有鼠标交互事件，确保计时准确
   document.addEventListener('mousemove', resetIdleTimer);
   document.addEventListener('click', resetIdleTimer);
   document.addEventListener('scroll', resetIdleTimer);

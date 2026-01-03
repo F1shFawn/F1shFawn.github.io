@@ -1385,7 +1385,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #6ad6ff;
+    background: #b6fc3c;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -2898,10 +2898,12 @@ body {
 /* 修正路径：假设CSS在css/文件夹，图片在根目录images/ */
   background: url("../images/background.jpg");
   background-repeat: no-repeat;
-  background-attachment: fixed;
-/* 固定背景，不是“不重复”（注释修正） */
-  background-size: cover; /* 覆盖整个容器（注释修正） */
-  background-position: 50% 50%;
+  background-attachment: fixed; /* 固定背景，滚动页面时背景不动 */
+  background-size: cover; /* 背景图铺满整个屏幕（关键） */
+  background-position: top center; /* 从顶部居中显示，消除顶部黑块 */
+  color: #000; /* 保留你原本的字体颜色 */
+  margin: 0; /* 新增：去掉body默认的外边距，避免边缘留白 */
+  padding: 0; /* 新增：去掉body默认的内边距 */
 }
 /* 第一篇博客样式 */
 .post-block {

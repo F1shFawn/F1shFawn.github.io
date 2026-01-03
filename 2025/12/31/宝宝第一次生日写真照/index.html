@@ -73,48 +73,23 @@
 
 
 <style>
-  /* 1. 鼠标移动时：全局显示OSS的Personselect.cur */
   * {
     cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Personselect.cur'), auto !important;
   }
 
-  /* 2. 鼠标静止3秒后：显示OSS的Unavailable.cur（最高优先级） */
   body.mouse-idle * {
     cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Unavailable.cur'), auto !important;
-    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Unavailable.cur'), auto \9 !important;
   }
 
-  /* 兜底：评论输入框基础样式（最高优先级） */
-  .comment-cursor-custom {
-    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Handwriting.cur'), text !important !important;
+  /* 高优先级：覆盖 idle 状态 */
+  body .comment-cursor-custom,
+  body.mouse-idle .comment-cursor-custom {
+    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Handwriting.cur'), text !important;
   }
 </style>
 
 <script>
-  // ========== 原有静止光标逻辑（完全保留） ==========
-  let idleTimer;
-  const IDLE_TIME = 3000;
-  function resetIdleTimer() {
-    clearTimeout(idleTimer);
-    document.body.classList.remove('mouse-idle');
-    idleTimer = setTimeout(() => {
-      document.body.classList.add('mouse-idle');
-    }, IDLE_TIME);
-  }
-  document.addEventListener('mousemove', resetIdleTimer);
-  document.addEventListener('click', resetIdleTimer);
-  document.addEventListener('scroll', resetIdleTimer);
-  window.onload = function() {
-    document.body.classList.remove('mouse-idle');
-    idleTimer = setTimeout(() => {
-      document.body.classList.add('mouse-idle');
-    }, IDLE_TIME);
-  };
-
-  // ========== 新增：监听DOM变化，强制给评论框加光标 ==========
-  // 核心：不管评论框什么时候加载，只要出现就加样式
   function setCommentCursor() {
-    // 匹配所有可能的评论输入框（覆盖所有场景）
     const commentInputs = document.querySelectorAll(`
       textarea, 
       [placeholder*="撰写评论"], 
@@ -125,27 +100,33 @@
       #tko-editor
     `);
     
-    // 给每个输入框强制加样式+自定义类
     commentInputs.forEach(input => {
-      // 强制赋值内联样式（优先级最高，无视任何CSS）
-      input.style.cursor = "url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Handwriting.cur'), text !important";
-      // 加兜底类
       input.classList.add('comment-cursor-custom');
-      // 监听鼠标移入，再次强制赋值（防止样式丢失）
-      input.addEventListener('mouseover', () => {
-        input.style.cursor = "url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Handwriting.cur'), text !important";
-      });
     });
   }
 
-  // 1. 页面加载后立刻执行一次
+  // 初始化 + 轮询
   setCommentCursor();
-  // 2. 每500毫秒检查一次DOM（覆盖动态加载的评论框）
   setInterval(setCommentCursor, 500);
-  // 3. 监听页面所有动态加载完成事件
-  document.addEventListener('DOMContentLoaded', setCommentCursor);
-  document.addEventListener('load', setCommentCursor);
+
+  // 事件监听
+  ['mousemove', 'click', 'scroll'].forEach(event =>
+    document.addEventListener(event, resetIdleTimer)
+  );
+
+  let idleTimer;
+  const IDLE_TIME = 3000;
+  function resetIdleTimer() {
+    clearTimeout(idleTimer);
+    document.body.classList.remove('mouse-idle');
+    idleTimer = setTimeout(() => document.body.classList.add('mouse-idle'), IDLE_TIME);
+  }
+
+  window.addEventListener('load', () => {
+    resetIdleTimer();
+  });
 </script>
+
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>

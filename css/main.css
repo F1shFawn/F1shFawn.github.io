@@ -1385,7 +1385,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #e2e28a;
+    background: #ffffa7;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -2919,12 +2919,13 @@ body {
   border-radius: 30px; /* 简写 */
   box-shadow: 8px 7px 2px 0 rgba(0,0,0,0.12), 7px 4px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12);
 }
+/* 文章背板：用十六进制透明色（仅背景透，内容不透） */
 .main-inner > .sub-menu,
 .main-inner > .post-block,
 .main-inner > .tabs-comment,
 .main-inner > .comments,
 .main-inner > .pagination {
-  background: rgba(245,245,245,0.42);
+  background: rgba(245,245,245,0.42); /* 原本的写法是对的，仅背景透 */
 }
 body {
   color: #000;
@@ -2935,15 +2936,15 @@ body {
 .posts-expand .post-meta-container {
   color: #800;
 }
+/* 侧边框：把opacity改成背景rgba（仅背景透，内容不透） */
 .sidebar {
-  opacity: 0.8;
+  background: rgba(255,255,255,0.8); /* 替换原来的opacity:0.8 */
 }
 .header-inner {
   background: rgba(255,255,255,0.8);
 }
+/* 搜索框：把opacity改成背景rgba */
 .popup {
-  opacity: 0.8;
+  background: rgba(255,255,255,0.8); /* 替换原来的opacity:0.8 */
 }
-.main-inner {
-  opacity: 0.8;
-}
+/* 整个主体：去掉opacity，因为外层背景已在.post-block等设置 */

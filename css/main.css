@@ -1385,7 +1385,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #b5ff9e;
+    background: #0aff57;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -2942,6 +2942,9 @@ body {
 .sidebar-inner,
 .sidebar-wrap {
   background: rgba(255,255,255,0.8) !important; /* !important提升优先级，确保覆盖原样式 */
+}
+.sidebar {
+  opacity: 0.8;
 }
 .header-inner {
   background: rgba(255,255,255,0.8);

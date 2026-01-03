@@ -84,24 +84,16 @@
     cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Unavailable.cur'), auto \9 !important;
   }
 
-  /* ===== 新增：评论输入框光标（最高优先级，兼容动态加载） ===== */
-  /* 替换下面的 .gt-comment-content 为你第一步找到的真实类名/ID！！！ */
-  /* 例：如果你找到的是 class="gt-comment-content"，就用这个；如果是 id="comment"，就用 #comment */
-  textarea.gt-comment-content,
-  textarea.gt-comment-content:hover,
-  body * textarea.gt-comment-content {
+  /* 兜底：评论输入框基础样式（最高优先级） */
+  .comment-cursor-custom {
     cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Handwriting.cur'), text !important !important;
-    /* 强制覆盖所有样式，包括动态加载的 */
-    z-index: 9999 !important;
-    pointer-events: auto !important;
   }
 </style>
 
 <script>
-  // 鼠标静止计时（3秒=3000毫秒）
+  // ========== 原有静止光标逻辑（完全保留） ==========
   let idleTimer;
   const IDLE_TIME = 3000;
-
   function resetIdleTimer() {
     clearTimeout(idleTimer);
     document.body.classList.remove('mouse-idle');
@@ -109,27 +101,50 @@
       document.body.classList.add('mouse-idle');
     }, IDLE_TIME);
   }
-
   document.addEventListener('mousemove', resetIdleTimer);
   document.addEventListener('click', resetIdleTimer);
   document.addEventListener('scroll', resetIdleTimer);
-
-  // 页面加载初始化 + 兼容动态加载的评论框（关键！）
   window.onload = function() {
     document.body.classList.remove('mouse-idle');
     idleTimer = setTimeout(() => {
       document.body.classList.add('mouse-idle');
     }, IDLE_TIME);
-
-    // 延迟1秒给动态加载的评论框加样式（比如Gitalk/Valine加载慢）
-    setTimeout(() => {
-      // 同样替换 .gt-comment-content 为你找到的真实选择器
-      const commentInput = document.querySelector('textarea.gt-comment-content');
-      if (commentInput) {
-        commentInput.style.cursor = "url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Handwriting.cur'), text !important";
-      }
-    }, 1000);
   };
+
+  // ========== 新增：监听DOM变化，强制给评论框加光标 ==========
+  // 核心：不管评论框什么时候加载，只要出现就加样式
+  function setCommentCursor() {
+    // 匹配所有可能的评论输入框（覆盖所有场景）
+    const commentInputs = document.querySelectorAll(`
+      textarea, 
+      [placeholder*="撰写评论"], 
+      [placeholder*="输入评论"], 
+      .gt-comment-content, 
+      .lr_editor_textarea, 
+      #veditor-content, 
+      #tko-editor
+    `);
+    
+    // 给每个输入框强制加样式+自定义类
+    commentInputs.forEach(input => {
+      // 强制赋值内联样式（优先级最高，无视任何CSS）
+      input.style.cursor = "url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Handwriting.cur'), text !important";
+      // 加兜底类
+      input.classList.add('comment-cursor-custom');
+      // 监听鼠标移入，再次强制赋值（防止样式丢失）
+      input.addEventListener('mouseover', () => {
+        input.style.cursor = "url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Handwriting.cur'), text !important";
+      });
+    });
+  }
+
+  // 1. 页面加载后立刻执行一次
+  setCommentCursor();
+  // 2. 每500毫秒检查一次DOM（覆盖动态加载的评论框）
+  setInterval(setCommentCursor, 500);
+  // 3. 监听页面所有动态加载完成事件
+  document.addEventListener('DOMContentLoaded', setCommentCursor);
+  document.addEventListener('load', setCommentCursor);
 </script>
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">

@@ -1385,7 +1385,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #cc06cc;
+    background: #9086a7;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -2123,6 +2123,9 @@ pre code {
   position: absolute;
   top: 0;
   width: 100%;
+}
+.post {
+  background-color: rgba(255,255,255,0.8);
 }
 .post-gallery {
   display: flex;

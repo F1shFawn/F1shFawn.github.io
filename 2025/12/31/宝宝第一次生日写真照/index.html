@@ -73,25 +73,39 @@
 
 
 <style>
+  /* 全局自定义光标（仅作用于非输入区域） */
   * {
     cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Personselect.cur'), auto !important;
   }
 
+  /* 鼠标空闲时的光标 */
   body.mouse-idle * {
     cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Unavailable.cur'), auto !important;
   }
 
-  /* 高优先级：覆盖 idle 状态 */
-  body .comment-cursor-custom,
-  body.mouse-idle .comment-cursor-custom {
+  /* 仅作用于非输入区域的评论光标 */
+  body .comment-cursor-custom {
     cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Handwriting.cur'), text !important;
+  }
+
+  /* 重要：强制重置输入框的光标为默认（浏览器会覆盖自定义光标） */
+  textarea,
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  [contenteditable="true"],
+  [placeholder*="撰写评论"],
+  [placeholder*="输入评论"] {
+    cursor: text !important;
   }
 </style>
 
 <script>
   function setCommentCursor() {
-    const commentInputs = document.querySelectorAll(`
-      textarea, 
+    const commentElements = document.querySelectorAll(`
       [placeholder*="撰写评论"], 
       [placeholder*="输入评论"], 
       .gt-comment-content, 
@@ -100,9 +114,20 @@
       #tko-editor
     `);
     
-    commentInputs.forEach(input => {
-      input.classList.add('comment-cursor-custom');
+    commentElements.forEach(element => {
+      // 仅给非输入元素添加自定义光标类
+      if (!isInputElement(element)) {
+        element.classList.add('comment-cursor-custom');
+      }
     });
+  }
+
+  // 检查元素是否为输入类型
+  function isInputElement(element) {
+    const inputTypes = ['INPUT', 'TEXTAREA', 'SELECT'];
+    return inputTypes.includes(element.tagName) || 
+           element.contentEditable === 'true' ||
+           element.hasAttribute('contenteditable');
   }
 
   // 初始化 + 轮询
@@ -126,7 +151,6 @@
     resetIdleTimer();
   });
 </script>
-
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>

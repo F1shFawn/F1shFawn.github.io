@@ -1,0 +1,1 @@
+{"Version":3,"FileReferences":{"Moc":"Sylus.v2.moc3","Textures":["Sylus.v2.2048/texture_00.png"],"Physics":"Sylus.v2.physics3.json","DisplayInfo":"Sylus.v2.cdi3.json"},"Groups":[{"Target":"Parameter","Name":"LipSync","Ids":[]},{"Target":"Parameter","Name":"EyeBlink","Ids":["ParamEyeROpen","ParamEyeLOpen"]}]}

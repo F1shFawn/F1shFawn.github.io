@@ -80,20 +80,19 @@
   /* 2. 鼠标静止3秒后：显示OSS的Unavailable.cur（最高优先级） */
   body.mouse-idle * {
     cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Unavailable.cur'), auto !important;
-    /* 兼容写法，确保不被主题样式覆盖 */
     cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Unavailable.cur'), auto \9 !important;
   }
 
-  /* ===== 新增：撰写评论输入框专属光标 ===== */
-  /* 匹配“撰写评论”输入框（覆盖不同评论系统的类名/属性，确保精准） */
-  textarea[placeholder*="撰写评论"],  /* 按占位符匹配（包含“撰写评论”即可） */
-  .comment-editor textarea,           /* 通用评论编辑器输入框 */
-  .gitalk-editor textarea,            /* Gitalk评论框 */
-  .lr_editor_textarea,                /* LiveRe评论框 */
-  #comment-textarea,                  /* 按ID匹配 */
-  [name="comment"]                    /* 按name属性匹配 */
-  {
-    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Handwriting.cur'), text !important;
+  /* ===== 新增：评论输入框光标（最高优先级，兼容动态加载） ===== */
+  /* 替换下面的 .gt-comment-content 为你第一步找到的真实类名/ID！！！ */
+  /* 例：如果你找到的是 class="gt-comment-content"，就用这个；如果是 id="comment"，就用 #comment */
+  textarea.gt-comment-content,
+  textarea.gt-comment-content:hover,
+  body * textarea.gt-comment-content {
+    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Handwriting.cur'), text !important !important;
+    /* 强制覆盖所有样式，包括动态加载的 */
+    z-index: 9999 !important;
+    pointer-events: auto !important;
   }
 </style>
 
@@ -102,27 +101,33 @@
   let idleTimer;
   const IDLE_TIME = 3000;
 
-  // 重置计时的通用函数
   function resetIdleTimer() {
     clearTimeout(idleTimer);
     document.body.classList.remove('mouse-idle');
-    // 重新开始计时：3秒后添加静止类
     idleTimer = setTimeout(() => {
       document.body.classList.add('mouse-idle');
     }, IDLE_TIME);
   }
 
-  // 绑定所有鼠标交互事件，确保计时准确
   document.addEventListener('mousemove', resetIdleTimer);
   document.addEventListener('click', resetIdleTimer);
   document.addEventListener('scroll', resetIdleTimer);
 
-  // 页面加载初始化
+  // 页面加载初始化 + 兼容动态加载的评论框（关键！）
   window.onload = function() {
     document.body.classList.remove('mouse-idle');
     idleTimer = setTimeout(() => {
       document.body.classList.add('mouse-idle');
     }, IDLE_TIME);
+
+    // 延迟1秒给动态加载的评论框加样式（比如Gitalk/Valine加载慢）
+    setTimeout(() => {
+      // 同样替换 .gt-comment-content 为你找到的真实选择器
+      const commentInput = document.querySelector('textarea.gt-comment-content');
+      if (commentInput) {
+        commentInput.style.cursor = "url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Handwriting.cur'), text !important";
+      }
+    }, 1000);
   };
 </script>
   <noscript>

@@ -1385,7 +1385,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #1cd9ba;
+    background: #b5ff9e;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -2936,12 +2936,15 @@ body {
 .posts-expand .post-meta-container {
   color: #800;
 }
-/* 侧边框：把opacity改成背景rgba（仅背景透，内容不透） */
-.sidebar {
-  background: rgba(255,255,255,0.5); /* 替换原来的opacity:0.8 */
+/* 侧边框：补充Next主题常用侧边栏类名 + 提升样式优先级（关键修改） */
+.sidebar,
+.aside,
+.sidebar-inner,
+.sidebar-wrap {
+  background: rgba(255,255,255,0.8) !important; /* !important提升优先级，确保覆盖原样式 */
 }
 .header-inner {
-  background: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.8);
 }
 /* 搜索框：把opacity改成背景rgba */
 .popup {

@@ -1385,7 +1385,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #0aff57;
+    background: #87da75;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -2935,13 +2935,6 @@ body {
 }
 .posts-expand .post-meta-container {
   color: #800;
-}
-/* 侧边框：补充Next主题常用侧边栏类名 + 提升样式优先级（关键修改） */
-.sidebar,
-.aside,
-.sidebar-inner,
-.sidebar-wrap {
-  background: rgba(255,255,255,0.8) !important; /* !important提升优先级，确保覆盖原样式 */
 }
 .sidebar {
   opacity: 0.8;

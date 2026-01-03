@@ -81,6 +81,18 @@
     /* 兼容写法，确保不被主题样式覆盖 */
     cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Unavailable.cur'), auto \9 !important;
   }
+
+  /* ===== 新增：撰写评论输入框专属光标 ===== */
+  /* 匹配“撰写评论”输入框（覆盖不同评论系统的类名/属性，确保精准） */
+  textarea[placeholder*="撰写评论"],  /* 按占位符匹配（包含“撰写评论”即可） */
+  .comment-editor textarea,           /* 通用评论编辑器输入框 */
+  .gitalk-editor textarea,            /* Gitalk评论框 */
+  .lr_editor_textarea,                /* LiveRe评论框 */
+  #comment-textarea,                  /* 按ID匹配 */
+  [name="comment"]                    /* 按name属性匹配 */
+  {
+    cursor: url('https://fawn1.oss-cn-beijing.aliyuncs.com/img/Handwriting.cur'), text !important;
+  }
 </style>
 
 <script>

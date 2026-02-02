@@ -49,9 +49,11 @@ function snowCanvas() {
     /* 添加Dom结点 */
     var snowcanvas = document.createElement("canvas");
     snowcanvas.id = "snowfall";
+    // 关键修改1：设置为固定定位，跟随视口
+    snowcanvas.setAttribute("style", "position:fixed; top: 0; left: 0; z-index: 9999; pointer-events: none;");
+    // 关键修改2：初始尺寸设为视口尺寸
     snowcanvas.width = window.innerWidth;
-    snowcanvas.height = window.innerHeight; // 改为innerHeight更合适
-    snowcanvas.setAttribute("style", "position:absolute; top: 0; left: 0; z-index: 9999; pointer-events: none;");
+    snowcanvas.height = window.innerHeight;
     document.body.appendChild(snowcanvas);
     
     this.canvas = snowcanvas;
@@ -59,10 +61,17 @@ function snowCanvas() {
     
     /* 窗口大小改变的处理 */
     var that = this; // 保存this指向
-    window.onresize = function () {
+    function resizeCanvas() {
         that.canvas.width = window.innerWidth;
         that.canvas.height = window.innerHeight;
-    };
+    }
+    window.addEventListener('resize', resizeCanvas);
+    // 可选：监听滚动事件（防止特殊场景下的适配问题）
+    window.addEventListener('scroll', function() {
+        // 滚动时确保canvas始终在视口顶部
+        that.canvas.style.top = '0';
+        that.canvas.style.left = '0';
+    });
 }
 
 /* 雪运动对象 */
